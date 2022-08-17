@@ -14,8 +14,8 @@ public class LoginController {
     @GetMapping()
     public String loginView(Model model) {
     //public String loginView(@ModelAttribute User user, Model model) {
-        model.addAttribute("signupSuccess", true);
-        model.addAttribute("signupError", true);
+        model.addAttribute("signupSuccess", false);
+        model.addAttribute("signupError", false);
         return "login";
     }
 
