@@ -25,9 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**").permitAll()
-                // access to css is required to allow loading the stylesheets !?
-                //.antMatchers("/signup", "/*.css", "/*.jpg").permitAll()
+                .antMatchers("/signup", "/home", "/css/**", "/js/**").permitAll()
+                // todo: remove home, which is not permitted without successful login
                 .anyRequest().authenticated();
 
         http.formLogin()
