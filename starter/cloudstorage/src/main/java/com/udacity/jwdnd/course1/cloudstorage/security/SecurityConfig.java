@@ -32,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll();
 
+        //.and().logout().logoutSuccessUrl("/login?logout") // todo: how to?
+        //.failureUrl("/login?error") // todo: works somehow ;-)
+
         http.formLogin()
                 .defaultSuccessUrl("/home", true);
     }
