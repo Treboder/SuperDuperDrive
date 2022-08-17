@@ -5,10 +5,8 @@ import com.udacity.jwdnd.course1.cloudstorage.services.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/login")
@@ -21,23 +19,32 @@ public class LoginController {
     }
 
     @GetMapping()
-    //public String loginView(Model model) {
-    public String loginView(@ModelAttribute User user, Model model) {
-        model.addAttribute("logoutSuccess", false);
-        model.addAttribute("loginError", false);
+    public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error,
+                                  @RequestParam(value = "logout", required = false) String logout) {
 
-        System.out.println(user.getUsername() + " tries to login with " + user.getPassword());
-        //Authentication authentication
-        //userService.
+        ModelAndView model = new ModelAndView();
+        if (error != null) {
+            model.addObject("loginError", true);
+        }
 
-        return "login";
+        if (logout != null) {
+            model.addObject("logoutSuccess", true);
+        }
+
+        model.setViewName("login");
+        return model;
     }
 
-    @PostMapping()
-    public String loginUser(@ModelAttribute User user, Model model) {
-        System.out.println("login procedure");
-        return "login";
-    }
-
+//    @GetMapping()
+//    public String loginView(@ModelAttribute User user, Model model) {
+//        model.addAttribute("logoutSuccess", false);
+//        model.addAttribute("loginError", false);
+//
+//        System.out.println(user.getUsername() + " tries to login with " + user.getPassword());
+//        //Authentication authentication
+//        //userService.
+//
+//        return "login";
+//    }
 
 }
