@@ -89,8 +89,6 @@ class CloudStorageApplicationTests {
 		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up!"));
 	}
 
-	
-	
 	/**
 	 * PLEASE DO NOT DELETE THIS method.
 	 * Helper method for Udacity-supplied sanity checks.
@@ -161,7 +159,6 @@ class CloudStorageApplicationTests {
 		driver.get("http://localhost:" + this.port + "/some-random-page");
 		Assertions.assertFalse(driver.getPageSource().contains("Whitelabel Error Page"));
 	}
-
 
 	/**
 	 * PLEASE DO NOT DELETE THIS TEST. You may modify this test to work with the 
