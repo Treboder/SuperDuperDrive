@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +41,16 @@ public class LoginController {
     public String loginView(@ModelAttribute User user, Model model) {
         model.addAttribute("logoutSuccess", true);
         model.addAttribute("loginError", false);
-        System.out.println(user.getUsername() + " logged out");
+        //System.out.println(getCurrentUser() + " logged out");
+        // ToDo: Prevent that the user enters home.html manually, without logging in again
         return "login";
     }
 
+    private String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return currentPrincipalName;
+    }
 
 //    @GetMapping()
 //    public String loginView(@ModelAttribute User user, Model model) {
