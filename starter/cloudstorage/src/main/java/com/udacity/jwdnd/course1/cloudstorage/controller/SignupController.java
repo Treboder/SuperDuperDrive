@@ -20,7 +20,9 @@ public class SignupController {
     }
 
     @GetMapping()
-    public String signupView() {
+    public String signupView(@ModelAttribute User user, Model model) {
+        model.addAttribute("signupSuccess", false);
+        model.addAttribute("signupError", false);
         return "signup";
     }
 
