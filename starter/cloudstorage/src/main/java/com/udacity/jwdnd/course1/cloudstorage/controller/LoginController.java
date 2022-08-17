@@ -41,8 +41,8 @@ public class LoginController {
     public String loginView(@ModelAttribute User user, Model model) {
         model.addAttribute("logoutSuccess", true);
         model.addAttribute("loginError", false);
+        SecurityContextHolder.clearContext();
         //System.out.println(getCurrentUser() + " logged out");
-        // ToDo: Prevent that the user enters home.html manually, without logging in again
         return "login";
     }
 

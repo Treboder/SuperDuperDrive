@@ -28,16 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signup", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/logout");
-
         http.formLogin()
                 .loginPage("/login")
                 .permitAll();
+                //.failureUrl("/login?error") // works somehow ;-)
 
-        //.and().logout().logoutSuccessUrl("/login?logout") // todo: how to?
-        //.failureUrl("/login?error") // todo: works somehow ;-)
+//      http.logout()
+//             .logoutUrl("/logout")
+//             .logoutSuccessUrl("/logout");
 
         http.formLogin()
                 .defaultSuccessUrl("/home", true);
