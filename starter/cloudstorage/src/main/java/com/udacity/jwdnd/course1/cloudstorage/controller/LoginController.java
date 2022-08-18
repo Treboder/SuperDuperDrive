@@ -1,16 +1,13 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.User;
+
 import com.udacity.jwdnd.course1.cloudstorage.services.AuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-//@RequestMapping("/login")
+@RequestMapping("/login")
 public class LoginController {
 
     private final AuthenticationProvider userService;
@@ -19,8 +16,7 @@ public class LoginController {
         this.userService = userService;
     }
 
-    //@GetMapping()
-    @RequestMapping(value="/login", method=RequestMethod.GET)
+    @GetMapping()
     public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error,
                                   @RequestParam(value = "logout", required = false) String logout) {
 
@@ -29,39 +25,8 @@ public class LoginController {
             model.addObject("loginError", true);
         }
 
-        if (logout != null) {
-            model.addObject("logoutSuccess", true);
-        }
-
         model.setViewName("login");
         return model;
     }
-
-    @RequestMapping(value="/logout", method=RequestMethod.GET)
-    public String loginView(@ModelAttribute User user, Model model) {
-        model.addAttribute("logoutSuccess", true);
-        model.addAttribute("loginError", false);
-        SecurityContextHolder.clearContext();
-        //System.out.println(getCurrentUser() + " logged out");
-        return "login";
-    }
-
-    private String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        return currentPrincipalName;
-    }
-
-//    @GetMapping()
-//    public String loginView(@ModelAttribute User user, Model model) {
-//        model.addAttribute("logoutSuccess", false);
-//        model.addAttribute("loginError", false);
-//
-//        System.out.println(user.getUsername() + " tries to login with " + user.getPassword());
-//        //Authentication authentication
-//        //userService.
-//
-//        return "login";
-//    }
 
 }
