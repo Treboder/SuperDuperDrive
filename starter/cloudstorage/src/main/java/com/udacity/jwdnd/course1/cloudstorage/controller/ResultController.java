@@ -10,12 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/result")
 public class ResultController {
 
-    private final AuthenticationProvider userService;
-
-    public ResultController(AuthenticationProvider userService) {
-        this.userService = userService;
-    }
-
     @GetMapping()
     public ModelAndView resultPage(@RequestParam(value = "error", required = false) String error) {
         ModelAndView model = new ModelAndView();
@@ -34,7 +28,7 @@ public class ResultController {
             model.addObject("errorMessage", "standard error message");
         }
 
-        model.setViewName("result");
+        model.setViewName("result"); // ToDo: pass parameter to automatically activate the last used tab
         return model;
     }
 

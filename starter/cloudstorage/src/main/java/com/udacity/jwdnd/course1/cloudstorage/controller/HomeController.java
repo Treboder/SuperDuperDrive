@@ -3,7 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -17,7 +16,8 @@ public class HomeController {
         model.addAttribute("files", getFiles()) ;
         model.addAttribute("notes", getNotes()) ;
         model.addAttribute("credentials", getCredentials()) ;
-        return "home"; // refers to home.html from templates
+        model.addAttribute("test", "test") ;
+        return "home"; // refers to home1.html from templates
     }
 
     private ArrayList<String> getNotes() {
