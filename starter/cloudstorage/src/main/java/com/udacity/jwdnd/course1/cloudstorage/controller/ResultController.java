@@ -16,22 +16,24 @@ public class ResultController {
         this.userService = userService;
     }
 
-    // Three Variants to show
-    // Your changes were successfully saved. Click here to continue
-    // Your changes were not saved. Click here to continue
-    // Example Error Message. Click here to continue
-
-//    @GetMapping()
-//    public String resultPage() {
-//        return "result";
-//    }
-
     @GetMapping()
-    //public ModelAndView resultPage(@RequestParam(value = "error", required = false) String error) {
-    public ModelAndView resultPage() {
+    public ModelAndView resultPage(@RequestParam(value = "error", required = false) String error) {
         ModelAndView model = new ModelAndView();
-        model.addObject("changeSuccess", true);
-        model.addObject("errorMessage", "my error message"); // empty string leads to standard error message
+
+        if(error == null)
+            model.addObject("changeSuccess", true);
+
+        else if (error != "") {
+            model.addObject("changeSuccess", false);
+            model.addObject("errorMessage", error);
+        }
+
+        else // empty string leads to standard error message
+        {
+            model.addObject("changeSuccess", false);
+            model.addObject("errorMessage", "standard error message");
+        }
+
         model.setViewName("result");
         return model;
     }
