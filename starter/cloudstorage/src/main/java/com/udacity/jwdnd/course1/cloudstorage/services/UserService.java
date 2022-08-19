@@ -8,12 +8,12 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
-public class AuthenticationProvider {
+public class UserService {
 
     private final UserMapper userMapper;
     private final HashService hashService;
 
-    public AuthenticationProvider(UserMapper userMapper, HashService hashService) {
+    public UserService(UserMapper userMapper, HashService hashService) {
         this.userMapper = userMapper;
         this.hashService = hashService;
     }

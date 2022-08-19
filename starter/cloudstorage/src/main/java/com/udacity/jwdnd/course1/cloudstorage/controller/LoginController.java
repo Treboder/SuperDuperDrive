@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 
-import com.udacity.jwdnd.course1.cloudstorage.services.AuthenticationProvider;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,9 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/login")
 public class LoginController {
 
-    private final AuthenticationProvider userService;
+    private final UserService userService;
 
-    public LoginController(AuthenticationProvider userService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
     }
 
