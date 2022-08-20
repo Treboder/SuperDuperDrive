@@ -1,7 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteFormBackingObject;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,42 +18,34 @@ import java.util.ArrayList;
 @RequestMapping("/home")
 public class HomeController {
 
-    NoteService noteService; // initialized by Spring via constructor below
+    //UserService userService;
+    FileService fileService;
+    NoteService noteService;
+    CredentialService credentialService;
+    // ... initialized by Spring via constructor below
 
-    public HomeController(NoteService noteService) {this.noteService = noteService; }
+    public HomeController(FileService fileService, NoteService noteService, CredentialService credentialService) {
+        this.fileService = fileService;
+        this.noteService = noteService;
+        this.credentialService = credentialService;
+    }
 
     @GetMapping()
     public String homeView(Authentication authentication,
                            @ModelAttribute("newNote") NoteFormBackingObject newNote,
                            Model model) {
 
-        model.addAttribute("files", getFiles()) ;
-        model.addAttribute("notes", noteService.getAllNoteTitles()) ; // todo: show notes from current user only
-        model.addAttribute("credentials", getCredentials()) ;
-        model.addAttribute("test", "test") ;
+        // todo: show files, notes and credentials from current user only
+        model.addAttribute("files", fileService.getAllFiles()) ;
+        model.addAttribute("notes", noteService.getAllNoteTitles()) ;
+        model.addAttribute("credentials", credentialService.getAllUrls()) ;
 
         return "home"; // refers to home.html from templates
     }
 
-    private ArrayList<String> getNotes() {
-        ArrayList<String> notes = new ArrayList<String>();
-        notes.add("noteA");
-        notes.add("noteB");
-        return notes;
-    }
 
-    private ArrayList<String> getFiles() {
-        ArrayList<String> files = new ArrayList<String>();
-        files.add("fileA");
-        files.add("fileB");
-        return files;
-    }
 
-    private ArrayList<String> getCredentials() {
-        ArrayList<String> credentials = new ArrayList<String>();
-        credentials.add("credA");
-        credentials.add("credB");
-        return credentials;
-    }
+
+
 
 }

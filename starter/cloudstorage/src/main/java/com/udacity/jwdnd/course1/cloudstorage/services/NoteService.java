@@ -2,7 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
-import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.model.MyNote;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class NoteService {
 
     public void addNote(String title, String description, String userName) {
         Integer userId = userMapper.getUser(userName).getUserId();
-        Note note = new Note(0, title, description, userId);
+        MyNote note = new MyNote(0, title, description, userId);
         System.out.println("NOTESERVICE -->add note: " + title);
         int id = noteMapper.addNote(note);
     }
@@ -29,7 +29,7 @@ public class NoteService {
         return noteMapper.getAllNoteTitles();
     }
 
-    public List<Note> getListOfNotesFromUser(Integer userId) {
+    public List<MyNote> getListOfNotesFromUser(Integer userId) {
         return noteMapper.getListOfNotesFromUser(userId);
     }
 
