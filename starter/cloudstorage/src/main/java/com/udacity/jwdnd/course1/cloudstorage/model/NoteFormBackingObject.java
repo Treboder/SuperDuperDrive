@@ -6,7 +6,7 @@ public class NoteFormBackingObject
     private String title;           // VARCHAR(20)
     private String description;     // VARCHAR (1000)
 
-    // getter setter lets the NoteController get the form input from home1.html,
+    // getter setter lets the NoteController get the form input from home.html,
     // then passes the fields to the NoteService creating the Note object
 
     public String getNoteId() {

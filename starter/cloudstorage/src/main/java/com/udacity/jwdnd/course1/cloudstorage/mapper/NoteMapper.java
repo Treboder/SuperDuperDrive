@@ -11,13 +11,16 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Select("SELECT notetitle FROM NOTES")
-    List<String> getAllNoteTitles();
+    //@Select("SELECT notetitle FROM NOTES")
+    //List<String> getAllNoteTitles();
+
+    @Select("SELECT * FROM NOTES")
+    List<MyNote> getAllNotes();
 
     @Select("SELECT * FROM NOTES WHERE userid = #{id}")
     List<MyNote> getListOfNotesFromUser(Integer id);
 
-    @Insert("INSERT INTO NOTES (notetitle, notedescription, uderid) VALUES(#{notetitle}, #{notedescription}, #{userid})")
+    @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES(#{notetitle}, #{notedescription}, #{userid})")
     @Options(useGeneratedKeys = true, keyProperty = "noteid")
     int addNote(MyNote note);
 

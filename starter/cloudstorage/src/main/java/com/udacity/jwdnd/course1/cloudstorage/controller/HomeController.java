@@ -37,7 +37,7 @@ public class HomeController {
 
         // todo: show files, notes and credentials from current user only
         model.addAttribute("files", fileService.getAllFiles()) ;
-        model.addAttribute("notes", noteService.getAllNoteTitles()) ;
+        model.addAttribute("notes", noteService.getAllNotes()) ;
         model.addAttribute("credentials", credentialService.getAllUrls()) ;
 
         return "home"; // refers to home.html from templates

@@ -12,7 +12,7 @@
 <div class="container">
     <div id="logoutDiv">
         <form action="#" th:action="@{/logout}" method="GET">
-            <button type="submit" class="btn btn-secondary float-right">Logout</button>
+            <button type="submit" class="btn btn-secondary float-right" id="logout">Logout</button>
         </form>
     </div>
     <div id="contentDiv" style="clear: right;">
@@ -52,7 +52,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- calls getter/setter from objects passed by controllers as model attributes -->
+                        <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="file : ${files}">
                             <td>
                                 <a target="_blank" class="btn btn-success">View</a>
@@ -67,12 +67,12 @@
 
             <!-- NOTES VIEW TAB -->
             <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
+                <button style="margin: 0.25em;" type="button" id="add-note-button-new" class="btn btn-info float-right" onclick="showNoteModal()">
                     + Add a New Note
                 </button>
                 <!-- NOTES TABLE -->
                 <div class="table-responsive">
-                    <table class="table table-striped" id="userTable">
+                    <table class="table table-striped" id="notesTable">
                         <thead>
                         <tr>
                             <th style="width: 20%" scope="col"></th>
@@ -81,14 +81,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- calls getter/setter from objects passed by controllers as model attributes -->
-                        <tr th:each="msg : ${notes}">
+                        <!-- calls getter/setter from model object passed by controller as model attribute -->
+                        <tr th:each="note : ${notes}">
                             <td>
                                 <button type="button" class="btn btn-success">Edit</button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
-                            <th scope="row" th:text="${msg}">Example Note Title</th>
-                            <td>Example Note Description </td>
+                            <th id="notesTableTitle" scope="row" th:text="${note.notetitle}">Example Note Title</th>
+                            <td id="notesTableDescription" th:text="${note.notedescription}">Example Note Description </td>
                         </tr>
                         </tbody>
                     </table>
@@ -119,7 +119,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="add-note-button-save" onclick="$('#noteSubmit').click();">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- calls getter/setter from objects passed by controllers as model attributes -->
+                        <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="credential : ${credentials}">
                             <td>
                                 <a target="_blank" class="btn btn-success">Edit</a>

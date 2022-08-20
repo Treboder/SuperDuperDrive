@@ -2,8 +2,11 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -19,12 +22,17 @@ class SuperDuperDriveTests {
 	private WebDriver driver;
 	private PageObjectLogin loginPage;
 	private PageObjectSignup signupPage;
+	private PageObjectHomeNotes homePageNotes;
+	private PageObjectHomeFiles homepageFiles;
+	private PageObjectResult resultPage;
 
 	private String firstName = "Harry";
 	private String lastName = "Potter";
 	private String user = "Harry";
 	private String password = "Nimbus";
-	private String message1 = "Du bist der, der schwach ist. Du wirst nie wissen, was Liebe ist. Oder Freundschaft. Und deswegen kannst du mir nur leidtun";
+
+	private String noteTitle =  "my first note";
+	private String noteText = "Du bist der, der schwach ist. Du wirst nie wissen, was Liebe ist. Oder Freundschaft. Und deswegen kannst du mir nur leidtun";
 
 
 	@BeforeAll
@@ -74,6 +82,52 @@ class SuperDuperDriveTests {
 
 	}
 
+	@Test
+	@Order(4)
+	public void createNewNoteAndSave() {
 
+		homePageNotes = new PageObjectHomeNotes(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageNotes.switchToNavNotesTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button-new")));
+		homePageNotes.clickAddNoteButtonNew();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
+		homePageNotes.fillNoteDetailsAndSave(noteTitle, noteText);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageNotes.switchToNavNotesTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button-new")));
+		String noteTitleOutput = homePageNotes.getNoteTitle();
+		Assertions.assertEquals(noteTitle, noteTitleOutput);
+
+		String noteDescriptionOutput = homePageNotes.getNoteDescription();
+		Assertions.assertEquals(noteText, noteDescriptionOutput);
+	}
+
+	private void doSignUp() {
+		driver.get("http://localhost:" + port + "/signup");
+		signupPage = new PageObjectSignup(driver);
+		signupPage.signup(firstName, lastName, user, password);
+	}
+
+	private void doLogin() {
+		driver.get("http://localhost:" + port + "/login");
+		loginPage = new PageObjectLogin(driver);
+		loginPage.login(user, password);
+	}
 
 }
