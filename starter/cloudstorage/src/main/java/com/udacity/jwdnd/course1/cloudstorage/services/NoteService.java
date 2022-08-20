@@ -21,17 +21,11 @@ public class NoteService {
     public void addNote(String title, String description, String userName) {
         Integer userId = userMapper.getUser(userName).getUserId();
         MyNote note = new MyNote(0, title, description, userId);
-        System.out.println("NOTESERVICE -->add note: " + title);
-        int id = noteMapper.addNote(note);
+        noteMapper.addNote(note);
     }
 
-//    public List<String> getAllNoteTitles() {
-//        return noteMapper.getAllNoteTitles();
-//    }
-
-    public List<MyNote> getAllNotes() { return noteMapper.getAllNotes(); }
-
-    public List<MyNote> getListOfNotesFromUser(Integer userId) {
+    public List<MyNote> getListOfNotesFromUser(String userName) {
+        Integer userId = userMapper.getUser(userName).getUserId();
         return noteMapper.getListOfNotesFromUser(userId);
     }
 

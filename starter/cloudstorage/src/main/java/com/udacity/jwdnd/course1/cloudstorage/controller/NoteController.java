@@ -26,9 +26,6 @@ public class NoteController {
         String noteTitle = newNote.getTitle();
         String noteDescription = newNote.getDescription();
 
-        //String noteId ?
-        System.out.println("NOTECONTROLLER --> add note: " + newNote.getTitle());
-
         noteService.addNote(noteTitle, noteDescription, userName);
         model.addAttribute("changeSuccess", true);
         return "result";

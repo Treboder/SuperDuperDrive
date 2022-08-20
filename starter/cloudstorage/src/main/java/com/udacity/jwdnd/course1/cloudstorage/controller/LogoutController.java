@@ -27,10 +27,6 @@ public class LogoutController {
         return "login";
     }
 
-    private String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        return currentPrincipalName;
-    }
+
 
 }
