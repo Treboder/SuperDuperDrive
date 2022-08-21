@@ -8,7 +8,8 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    // uses the getter methods from note model object, e.g. notetitle via getNotetitle()
+    // uses the getter methods from note model object map the objects to db structure
+    // e.g. notetitle via getNotetitle() and userid via getUserid (small/capital letter matter!)
 
     @Select("SELECT * FROM NOTES WHERE userid = #{id}")
     List<MyNote> getListOfNotesFromUser(Integer id);

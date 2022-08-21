@@ -23,7 +23,7 @@ class SuperDuperDriveTests {
 	private PageObjectLogin loginPage;
 	private PageObjectSignup signupPage;
 	private PageObjectHomeNotes homePageNotes;
-	private PageObjectHomeFiles homepageFiles;
+	//private PageObjectHomeFiles homepageFiles;
 	private PageObjectResult resultPage;
 
 	private String firstName = "Harry";
@@ -31,9 +31,11 @@ class SuperDuperDriveTests {
 	private String user = "Harry";
 	private String password = "Nimbus";
 
-	private String noteTitle =  "my first note";
-	private String noteText = "Du bist der, der schwach ist. Du wirst nie wissen, was Liebe ist. Oder Freundschaft. Und deswegen kannst du mir nur leidtun";
+	private String noteTitle1 =  "my first note";
+	private String noteText1 = "Du bist der, der schwach ist. Du wirst nie wissen, was Liebe ist. Oder Freundschaft. Und deswegen kannst du mir nur leidtun";
 
+	private String noteTitle2 =  "my edited note";
+	private String noteText2 = "Es sind nicht unsere Fähigkeiten, die zeigen wer wir sind, sondern unsere Entscheidungen";
 
 	@BeforeAll
 	static void beforeAll() {
@@ -84,7 +86,7 @@ class SuperDuperDriveTests {
 
 	@Test
 	@Order(4)
-	public void createNewNoteAndSave() {
+	public void addNewNoteAndSave() {
 
 		homePageNotes = new PageObjectHomeNotes(driver);
 		resultPage = new PageObjectResult(driver);
@@ -97,11 +99,11 @@ class SuperDuperDriveTests {
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		homePageNotes.switchToNavNotesTab();
 
-		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button-new")));
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
 		homePageNotes.clickAddNoteButtonNew();
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
-		homePageNotes.fillNoteDetailsAndSave(noteTitle, noteText);
+		homePageNotes.fillNoteDetailsAndSave(noteTitle1, noteText1);
 
 		webDriverWait.until(ExpectedConditions.titleContains("Result"));
 		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
@@ -110,12 +112,49 @@ class SuperDuperDriveTests {
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		homePageNotes.switchToNavNotesTab();
 
-		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button-new")));
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
 		String noteTitleOutput = homePageNotes.getNoteTitle();
-		Assertions.assertEquals(noteTitle, noteTitleOutput);
+		Assertions.assertEquals(noteTitle1, noteTitleOutput);
 
 		String noteDescriptionOutput = homePageNotes.getNoteDescription();
-		Assertions.assertEquals(noteText, noteDescriptionOutput);
+		Assertions.assertEquals(noteText1, noteDescriptionOutput);
+	}
+
+	@Test
+	@Order(5)
+	public void editExistingNoteAndSave() {
+
+		homePageNotes = new PageObjectHomeNotes(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+		// doFirstNote();  ... first note already exists after test addNewNoteAndSave() has passed
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageNotes.switchToNavNotesTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-note-button")));
+		homePageNotes.clickEditNoteButton();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
+		homePageNotes.fillNoteDetailsAndSave(noteTitle2, noteText2);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageNotes.switchToNavNotesTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
+		String noteTitleOutput = homePageNotes.getNoteTitle();
+		Assertions.assertEquals(noteTitle2, noteTitleOutput);
+
+		String noteDescriptionOutput = homePageNotes.getNoteDescription();
+		Assertions.assertEquals(noteText2, noteDescriptionOutput);
 	}
 
 	private void doSignUp() {
@@ -128,6 +167,24 @@ class SuperDuperDriveTests {
 		driver.get("http://localhost:" + port + "/login");
 		loginPage = new PageObjectLogin(driver);
 		loginPage.login(user, password);
+	}
+
+	private void doFirstNote() {
+		homePageNotes = new PageObjectHomeNotes(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageNotes.switchToNavNotesTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
+		homePageNotes.clickAddNoteButtonNew();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
+		homePageNotes.fillNoteDetailsAndSave(noteTitle1, noteText1);
 	}
 
 }
