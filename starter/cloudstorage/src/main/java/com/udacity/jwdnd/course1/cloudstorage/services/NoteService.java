@@ -18,16 +18,23 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
+    public List<MyNote> getListOfNotesFromUser(String userName) {
+        Integer userId = userMapper.getUser(userName).getUserId();
+        return noteMapper.getListOfNotesFromUser(userId);
+    }
+
     public void addNote(String title, String description, String userName) {
         Integer userId = userMapper.getUser(userName).getUserId();
         MyNote note = new MyNote(0, title, description, userId);
         noteMapper.addNote(note);
     }
 
-    public List<MyNote> getListOfNotesFromUser(String userName) {
+    public void editNote(String id, String title, String description, String userName) {
         Integer userId = userMapper.getUser(userName).getUserId();
-        return noteMapper.getListOfNotesFromUser(userId);
+        MyNote note = new MyNote(Integer.valueOf(id), title, description, userId);
+        noteMapper.editNote(note);
     }
+
 
 //    public Note getNote(Integer noteId) {
 //        return noteMapper.getNote(noteId);

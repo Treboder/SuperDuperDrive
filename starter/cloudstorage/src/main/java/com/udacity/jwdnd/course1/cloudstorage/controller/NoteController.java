@@ -25,8 +25,16 @@ public class NoteController {
         String userName = authentication.getName();
         String noteTitle = newNote.getTitle();
         String noteDescription = newNote.getDescription();
+        String noteId = newNote.getNoteId();
 
-        noteService.addNote(noteTitle, noteDescription, userName);
+        if(noteId.isEmpty())
+            noteService.addNote(noteTitle, noteDescription, userName);
+        else {
+            noteService.editNote(noteId, noteTitle, noteDescription, userName);
+            System.out.println("edit " + noteId);
+        }
+
+        // always show success message, but should depend on noteService response
         model.addAttribute("changeSuccess", true);
         return "result";
     }

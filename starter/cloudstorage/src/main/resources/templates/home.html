@@ -84,7 +84,13 @@
                         <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="note : ${notes}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button type="button" class="btn btn-success"
+                                        th:id="${note.noteid}"
+                                        th:title="${note.notetitle}"
+                                        th:description="${note.notedescription}"
+                                        th:onclick="showNoteModal(this.getAttribute('id'), this.getAttribute('title'), this.getAttribute('description'))">
+                                        Edit
+                                </button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
                             <th id="notesTableTitle" scope="row" th:text="${note.notetitle}">Example Note Title</th>
