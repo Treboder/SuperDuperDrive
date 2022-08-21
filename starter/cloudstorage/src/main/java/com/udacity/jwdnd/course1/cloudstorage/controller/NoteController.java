@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("note")
@@ -16,8 +17,8 @@ public class NoteController {
 
     public NoteController(NoteService noteService) { this.noteService = noteService; }
 
-    @PostMapping("add")
-    public String addNote(
+    @PostMapping("addOrEdit")
+    public String addOrEditNote(
             Authentication authentication,
             @ModelAttribute("newNote") NoteFormBackingObject newNote,
             Model model) {
@@ -29,15 +30,28 @@ public class NoteController {
 
         if(noteId.isEmpty())
             noteService.addNote(noteTitle, noteDescription, userName);
-        else {
+        else
             noteService.editNote(noteId, noteTitle, noteDescription, userName);
-            System.out.println("edit " + noteId);
-        }
 
         // always show success message, but should depend on noteService response
         model.addAttribute("changeSuccess", true);
         return "result";
     }
+
+    @GetMapping("delete")
+    public ModelAndView deleteNote(@RequestParam(value = "noteid", required = false) String noteid) {
+        // pass the noteid as parameter via http://localhost:8080/note/delete?noteid=xyz
+        ModelAndView model = new ModelAndView();
+        if (noteid != null)
+            noteService.deleteNote(Integer.parseInt(noteid));
+
+        // always show success message, but should depend on noteService response
+        model.addObject("changeSuccess", true);
+        model.setViewName("result");
+        return model; // alternatively use Model model as input parameter and return String (with "result") instead
+    }
+
+
 
 
 }

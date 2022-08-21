@@ -86,13 +86,16 @@
                             <td>
                                 <!-- th:id="${note.noteid}" ... could be used below to dynamically set element id for testing multiple note cases -->
                                 <button type="button" class="btn btn-success" id="edit-note-button"
-                                        th:noteid="${note.noteid}"
-                                        th:notetitle="${note.notetitle}"
-                                        th:notedescription="${note.notedescription}"
-                                        th:onclick="showNoteModal(this.getAttribute('noteid'), this.getAttribute('notetitle'), this.getAttribute('notedescription'))">
-                                        Edit
+                                    th:noteid="${note.noteid}"
+                                    th:notetitle="${note.notetitle}"
+                                    th:notedescription="${note.notedescription}"
+                                    th:onclick="showNoteModal(this.getAttribute('noteid'), this.getAttribute('notetitle'), this.getAttribute('notedescription'))">
+                                    Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-danger" id="delete-note-button"
+                                    th:href="@{'/note/delete?noteid=' + ${note.noteid}}">  <!-- e.g. /note/delete?noteid=99 -->
+                                    Delete
+                                </a>
                             </td>
                             <th id="notesTableTitle" scope="row" th:text="${note.notetitle}">Example Note Title</th>
                             <td id="notesTableDescription" th:text="${note.notedescription}">Example Note Description </td>
@@ -111,7 +114,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST" th:action="@{/note/add}" th:object="${newNote}" >
+                                <form action="#" method="POST" th:action="@{/note/addOrEdit}" th:object="${newNote}" >
                                     <input type="hidden" name="noteId" id="note-id" >
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>

@@ -35,17 +35,10 @@ public class NoteService {
         noteMapper.editNote(note);
     }
 
+    public void deleteNote(Integer noteId) {
+        noteMapper.deleteNote(noteId);
+    }
 
-//    public Note getNote(Integer noteId) {
-//        return noteMapper.getNote(noteId);
-//    }
-//
-//    public void deleteNote(Integer noteId) {
-//        noteMapper.deleteNote(noteId);
-//    }
-//
-//    public void updateNote(Integer noteId, String title, String description) {
-//        noteMapper.updateNote(noteId, title, description);
-//    }
+
 
 }

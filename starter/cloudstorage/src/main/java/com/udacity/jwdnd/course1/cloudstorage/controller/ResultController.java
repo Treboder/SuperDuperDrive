@@ -16,6 +16,7 @@ public class ResultController {
         if(error == null)
             model.addObject("changeSuccess", true);
 
+        // pass a customized error message as parameter via http://localhost:8080/result?error=my_personal_error_message
         else if (error != "") {
             model.addObject("changeSuccess", false);
             model.addObject("errorMessage", error);

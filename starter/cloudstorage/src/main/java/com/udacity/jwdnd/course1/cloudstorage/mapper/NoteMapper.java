@@ -21,5 +21,9 @@ public interface NoteMapper {
     @Update("UPDATE NOTES SET notetitle = #{notetitle}, notedescription = #{notedescription} WHERE noteid = #{noteid}")
     void editNote(MyNote note);
 
+    @Delete("DELETE FROM NOTES WHERE noteid = #{noteId}")
+    void deleteNote(Integer noteId);
+
+
 }
 
