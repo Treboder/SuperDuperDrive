@@ -23,7 +23,7 @@ class SuperDuperDriveTests {
 	private PageObjectLogin loginPage;
 	private PageObjectSignup signupPage;
 	private PageObjectHomeNotes homePageNotes;
-	//private PageObjectHomeFiles homepageFiles;
+	private PageObjectHomeFiles homePageFiles;
 	private PageObjectResult resultPage;
 
 	private String firstName = "Harry";
@@ -40,6 +40,8 @@ class SuperDuperDriveTests {
 	private String noteTitle3 = "another note";
 	private String noteText3 = "Wenn du wissen willst, wie ein Mensch ist, dann sieh dir genau an wie er seine Untergebenen behandelt, nicht die Gleichrangigen";
 
+	private String filePath1 = System.getProperty("user.dir");
+	private String fileName1 = "README.md";
 
 	@BeforeAll
 	static void beforeAll() {
@@ -118,9 +120,10 @@ class SuperDuperDriveTests {
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
 		String noteTitleOutput = homePageNotes.getNoteTitle();
-		Assertions.assertEquals(noteTitle1, noteTitleOutput);
-
 		String noteDescriptionOutput = homePageNotes.getNoteDescription();
+
+		// expectation is to see the first note
+		Assertions.assertEquals(noteTitle1, noteTitleOutput);
 		Assertions.assertEquals(noteText1, noteDescriptionOutput);
 	}
 
@@ -134,7 +137,7 @@ class SuperDuperDriveTests {
 
 		doSignUp();
 		doLogin();
-		// doFirstNote();  ... first note already exists after test addNewNoteAndSave() has passed
+		// ... first note already exists after test addNewNoteAndSave() has passed
 
 		driver.get("http://localhost:" + port + "/home");
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
@@ -199,6 +202,68 @@ class SuperDuperDriveTests {
 		Assertions.assertEquals(noteText3, noteDescriptionOutput);
 	}
 
+	@Test
+	@Order(7)
+	public void addFileSuccess() {
+
+		final String dir = System.getProperty("user.dir");
+		System.out.println("current dir = " + dir);
+
+		homePageFiles = new PageObjectHomeFiles(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageFiles.chooseFileAndClickUploadButton(filePath1 + "\\" + fileName1);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		String fileTitleOutput = homePageFiles.getFileName();
+
+		// expectation is to see the first file, which is README.md in this test case
+		Assertions.assertEquals(fileName1, fileTitleOutput);
+	}
+
+
+	@Test
+	@Order(8)
+	public void addFileFailure() {
+
+		final String dir = System.getProperty("user.dir");
+		System.out.println("current dir = " + dir);
+
+		homePageFiles = new PageObjectHomeFiles(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageFiles.chooseFileAndClickUploadButton(filePath1 + "\\" + fileName1);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Error", resultPage.getErrorMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		String fileTitleOutput = homePageFiles.getFileName();
+
+		// expectation is to see the first file, which is README.md in this test case
+		Assertions.assertEquals(fileName1, fileTitleOutput);
+
+		// ToDo: check second row to test that no second file with the same name exists
+	}
+
+
 	private void doSignUp() {
 		driver.get("http://localhost:" + port + "/signup");
 		signupPage = new PageObjectSignup(driver);
@@ -209,24 +274,6 @@ class SuperDuperDriveTests {
 		driver.get("http://localhost:" + port + "/login");
 		loginPage = new PageObjectLogin(driver);
 		loginPage.login(user, password);
-	}
-
-	private void doAddFirstNote() {
-		homePageNotes = new PageObjectHomeNotes(driver);
-		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
-
-		doSignUp();
-		doLogin();
-
-		driver.get("http://localhost:" + port + "/home");
-		webDriverWait.until(ExpectedConditions.titleContains("Home"));
-		homePageNotes.switchToNavNotesTab();
-
-		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-note-button")));
-		homePageNotes.clickAddNoteButtonNew();
-
-		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
-		homePageNotes.fillNoteDetailsAndSave(noteTitle1, noteText1);
 	}
 
 	private void doAddSecondNote() {

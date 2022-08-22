@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.FileFormBackingObject;
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteFormBackingObject;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -32,11 +33,13 @@ public class HomeController {
 
     @GetMapping()
     public String homeView(Authentication authentication,
+                           // model attributes not used here, but required by thymeleaf to render home.html properly
+                           @ModelAttribute("newFile") FileFormBackingObject newFile,
                            @ModelAttribute("newNote") NoteFormBackingObject newNote,
                            Model model) {
 
         // todo: show files, notes and credentials from current user only
-        model.addAttribute("files", fileService.getAllFiles()) ;
+        model.addAttribute("files", fileService.getListOfFilesFromUser(authentication.getName())) ;
         model.addAttribute("notes", noteService.getListOfNotesFromUser(authentication.getName())) ;
         model.addAttribute("credentials", credentialService.getAllUrls()) ;
 

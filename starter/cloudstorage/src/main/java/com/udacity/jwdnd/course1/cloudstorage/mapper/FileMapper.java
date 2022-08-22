@@ -1,26 +1,27 @@
 package com.udacity.jwdnd.course1.cloudstorage.mapper;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.MyFile;
-import com.udacity.jwdnd.course1.cloudstorage.model.MyNote;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import com.udacity.jwdnd.course1.cloudstorage.model.File;
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import org.apache.ibatis.annotations.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Mapper
 public interface FileMapper {
 
-    @Select("SELECT fileId FROM FILES")
-    List<String> getAllFileNames();
+    // uses the getter methods from file model object map the objects to db structure
+    // e.g. userID via getUserID() and userid via getUserid (small/capital letter matter!)
 
     @Select("SELECT * FROM FILES WHERE userId = #{id}")
-    List<MyFile> getListOfFilesFromUser(Integer id);
+    List<File> getListOfFilesFromUser(Integer id);
 
-    @Insert("INSERT INTO FILES (fileName, contentType, fileSize, userID, fileData) VALUES(#{fileName}, #{contentType}, #{fileSize}, #{userid}, #{fileData})")
-    @Options(useGeneratedKeys = true, keyProperty = "fileid")
-    int addNote(MyNote note);
+    @Insert("INSERT INTO FILES (fileName, contentType, fileSize, userID, fileData) VALUES(#{fileName}, #{contentType}, #{fileSize}, #{userID}, #{fileData})")
+    @Options(useGeneratedKeys = true, keyProperty = "fileID")
+    int addFile(File file);
+
+    @Delete("DELETE FROM FILES WHERE fileid = #{fileId}")
+    void deleteFile(Integer fileId);
 
 }
 

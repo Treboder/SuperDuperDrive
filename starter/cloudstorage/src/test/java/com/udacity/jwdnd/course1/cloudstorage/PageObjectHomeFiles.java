@@ -10,14 +10,26 @@ public class PageObjectHomeFiles {
     @FindBy(id="nav-files-tab")
     private WebElement nav_files_tab;
 
+    @FindBy(id="fileUpload")
+    private WebElement files_fileChooser;
+
     @FindBy(id="uploadButton")
     private WebElement files_uploadButton;
 
-    @FindBy(id="filesTable")
-    private WebElement filesTable;
+    @FindBy(id="filesTableFileName")
+    private WebElement files_TableFileName;
 
     public PageObjectHomeFiles(WebDriver driver) {
         PageFactory.initElements(driver, this);
+    }
+
+    public void chooseFileAndClickUploadButton(String fileName) {
+        files_fileChooser.sendKeys(fileName);
+        files_uploadButton.click();
+    }
+
+    public String getFileName() {
+        return files_TableFileName.getText();
     }
 
 }

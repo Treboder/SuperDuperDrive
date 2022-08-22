@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
-public class MyNote {
+public class Note {
 
     private int noteid;                 // auto-incremented id from db
     private String notetitle;           // VARCHAR(20)
@@ -10,7 +10,7 @@ public class MyNote {
     // MyBatis calls constructor and getter (via mapper class) for reading/writing the object from/to database
     // Thymeleaf calls getter to render the data in corresponding html
 
-    public MyNote(int id, String title, String description, int user) {
+    public Note(int id, String title, String description, int user) {
         this.noteid = id;
         this.notetitle = title;
         this.notedescription = description;

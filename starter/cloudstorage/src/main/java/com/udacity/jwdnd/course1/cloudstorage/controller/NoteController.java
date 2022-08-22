@@ -15,7 +15,10 @@ public class NoteController {
 
     NoteService noteService; // initialized by Spring via constructor below
 
-    public NoteController(NoteService noteService) { this.noteService = noteService; }
+    // Spring initializes the object along with @Controller annotation
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
+    }
 
     @PostMapping("addOrEdit")
     public String addOrEditNote(
@@ -48,7 +51,7 @@ public class NoteController {
         // always show success message, but should depend on noteService response
         model.addObject("changeSuccess", true);
         model.setViewName("result");
-        return model; // alternatively use Model model as input parameter and return String (with "result") instead
+        return model; // alternatively use "Model model" as input parameter and return String (with "result") instead
     }
 
 
