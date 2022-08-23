@@ -2,7 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.model;
 
 public class Credential {
 
-    private int credentialID;           // Int auto-incremented by db
+    private int credentialId;           // Int auto-incremented by db
     private String url;                 // VARCHAR(100)
     private String username;            // VARCHAR (30)
     private String key;                 // VARCHAR
@@ -12,8 +12,8 @@ public class Credential {
     // MyBatis calls constructor and getter (via mapper class) for reading/writing the object from/to database
     // Thymeleaf calls getter to render the data in corresponding html
 
-    public Credential(int credentialID, String url, String username, String key, String password, int userId) {
-        this.credentialID = credentialID;
+    public Credential(int credentialId, String url, String username, String key, String password, int userId) {
+        this.credentialId = credentialId;
         this.url = url;
         this.username = username;
         this.key = key;
@@ -21,8 +21,8 @@ public class Credential {
         this.userId = userId;
     }
 
-    public int getCredentialID() {
-        return credentialID;
+    public int getCredentialId() {
+        return credentialId;
     }
 
     public String getUrl() {

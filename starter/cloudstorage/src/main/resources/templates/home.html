@@ -196,12 +196,22 @@
                         <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="credential : ${credentials}">
                             <td>
-                                <a target="_blank" class="btn btn-success">Edit</a>
-                                <a  class="btn btn-danger">Delete</a>
+                                <a target="_blank" class="btn btn-success"
+                                   th:credentialId="${credential.credentialId}"
+                                   th:url="${credential.url}"
+                                   th:username="${credential.username}"
+                                   th:password="${credential.password}"
+                                   th:onclick="showCredentialModal(this.getAttribute('credentialId'), this.getAttribute('url'), this.getAttribute('username'), this.getAttribute('password'))">
+                                   Edit
+                                </a>
+                                <a  class="btn btn-danger"
+                                    th:href="@{'/credential/delete?credentialid=' + ${credential.credentialId}}">  <!-- e.g. /credential/delete?credentialid=99 -->
+                                    Delete
+                                </a>
                             </td>
-                            <th scope="row" th:text="${credential}">Example Credential URL</th>
-                            <td>Example Credential Username</td>
-                            <td>Example Credential Password</td>
+                            <th scope="row" th:text="${credential.url}">Example Credential URL</th>
+                            <td th:text="${credential.username}">Example Credential Username</td>
+                            <td th:text="${credential.password}">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>
@@ -217,11 +227,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
+                                <form action="#" method="POST" th:action="@{/credential/addOrEdit}" th:object="${credentialForm}" >
                                     <input type="hidden" name="credentialId" id="credential-id">
                                     <div class="form-group">
                                         <label for="credential-url" class="col-form-label">URL</label>
-                                        <input type="text" name= "url" class="form-control" id="credential-url" maxlength="100" required>
+                                        <input type="text" name= "url" class="form-control" id="credential-url"  maxlength="100" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="credential-username" class="col-form-label">Username</label>
