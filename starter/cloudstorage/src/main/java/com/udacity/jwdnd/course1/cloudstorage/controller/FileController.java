@@ -71,8 +71,9 @@ public class FileController {
             value = "/get/{fileName}",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public @ResponseBody byte[] getFile(@PathVariable String fileName) {
-        return fileService.getFile(fileName).getFileData();
+    public @ResponseBody byte[] getFile(@PathVariable String fileName, Authentication authentication) {
+        String userName = authentication.getName();
+        return fileService.getFile(fileName, userName).getFileData();
     }
 
     private Boolean fileExists(MultipartFile multipartFile, String userName) {

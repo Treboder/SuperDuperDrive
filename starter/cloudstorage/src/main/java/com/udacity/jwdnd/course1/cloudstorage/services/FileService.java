@@ -45,8 +45,9 @@ public class FileService {
         fileMapper.deleteFile(fileId);
     }
 
-    public File getFile(String fileName) {
-        return fileMapper.getFile(fileName);
+    public File getFile(String fileName, String userName) {
+        Integer userId = userMapper.getUser(userName).getUserId();
+        return fileMapper.getFile(fileName, userId);
     }
 
     private byte[] getFileData(MultipartFile multipartFile) throws IOException {
