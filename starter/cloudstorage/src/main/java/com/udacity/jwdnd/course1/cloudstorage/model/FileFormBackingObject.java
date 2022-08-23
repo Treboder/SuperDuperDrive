@@ -14,6 +14,9 @@ public class FileFormBackingObject {
         this.file = file;
     }
 
+
+    // ### trying trying
+
     private String test = "ahahahahaha";
 
     public String getTest() {
@@ -23,6 +26,19 @@ public class FileFormBackingObject {
         else
             return file.getName();
     }
+
+    private String fileName;            // VARCHAR
+
+    public String getFileName() {
+        return "sould be a file name"; //fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+
+
 
 
 

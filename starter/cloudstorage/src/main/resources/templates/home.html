@@ -55,17 +55,20 @@
                         <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="file : ${files}">
                             <td>
+                                <!-- start download
                                 <a target="_blank" class="btn btn-success"
                                 th:href="@{/file/get/{file}(file = ${file.fileID})}" >
                                    View
                                 </a>
-                                <!--
+                                -->
+                                <!-- show dialog -->
                                 <a target="_blank" class="btn btn-success"
                                    th:test="${file.test}"
-                                   th:onclick="showFileModal(this.getAttribute('test'))">
+                                   th:fileName="${file.fileName}"
+                                   th:onclick="showFileModal(this.getAttribute('test'), this.getAttribute('fileName'))">
                                    View
                                 </a>
-                                -->
+
                                 <a  class="btn btn-danger"
                                     th:href="@{'/file/delete?fileid=' + ${file.fileID}}">  <!-- e.g. /file/delete?fileid=99 -->
                                     Delete
@@ -87,11 +90,11 @@
                                 </button>
                             </div>
                             <div class="modal-body" th:object="${fileForm}">
-                                <form action="#" method="GET" th:action="@{/file/get/{file}(file = ${fileForm.test})}"  > <!--  -->
+                                <form action="#" method="GET"  th:action="@{/file/get/{file}(file = ${fileForm.test})}" > <!-- th:action="@{/file/get/{file}(file = ${fileForm.test})}" -->
                                     <input type="hidden" name="file-id" id="file-id" >
                                     <div class="form-group">
-                                        <label for="note-description" class="col-form-label">Content</label>
-                                        <textarea class="form-control" th:text="${fileForm.test}" id="file-content" rows="5" maxlength="1000" required></textarea>
+                                        <label for="file-content" class="col-form-label">Content</label>
+                                        <textarea class="form-control" th:field="*{fileName}" name= "fileName" id="file-content" rows="5" maxlength="1000" required></textarea>
                                     </div>
                                     <button id="fileSubmit" type="submit" class="d-none"></button>
                                 </form>
@@ -158,7 +161,8 @@
                                     <input type="hidden" name="noteId" id="note-id" >
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
-                                        <input class="form-control" type="text" name= "noteTitle" id="note-title"  th:field="*{title}" maxlength="20" required>
+                                        <input class="form-control" type="text" name= "noteTitle" id="note-title" th:field="*{title}" maxlength="20" required>
+                                        <!-- todo: why is th:field="*{title}" needed here, but not for the credentials ? -->
                                     </div>
                                     <div class="form-group">
                                         <label for="note-description" class="col-form-label">Description</label>
@@ -178,7 +182,7 @@
 
             <!-- CREDENTIALS VIEW TAB -->
             <div class="tab-pane fade" id="nav-credentials" role="tabpanel" aria-labelledby="nav-credentials-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
+                <button style="margin: 0.25em;" type="button" id="add-credential-button" class="btn btn-info float-right" onclick="showCredentialModal()">
                     + Add a New Credential
                 </button>
                 <!-- CREDENTIALS TABlE -->
@@ -196,7 +200,7 @@
                         <!-- calls getter/setter from model object passed by controller as model attribute -->
                         <tr th:each="credential : ${credentials}">
                             <td>
-                                <a target="_blank" class="btn btn-success"
+                                <a target="_blank" class="btn btn-success" id="edit-credential-button"
                                    th:credentialId="${credential.credentialId}"
                                    th:url="${credential.url}"
                                    th:username="${credential.username}"
@@ -204,14 +208,14 @@
                                    th:onclick="showCredentialModal(this.getAttribute('credentialId'), this.getAttribute('url'), this.getAttribute('username'), this.getAttribute('password'))">
                                    Edit
                                 </a>
-                                <a  class="btn btn-danger"
+                                <a  class="btn btn-danger" id="delete-credential-button"
                                     th:href="@{'/credential/delete?credentialid=' + ${credential.credentialId}}">  <!-- e.g. /credential/delete?credentialid=99 -->
                                     Delete
                                 </a>
                             </td>
-                            <th scope="row" th:text="${credential.url}">Example Credential URL</th>
-                            <td th:text="${credential.username}">Example Credential Username</td>
-                            <td th:text="${credential.password}">Example Credential Password</td>
+                            <th id="credentialTableUrl" scope="row" th:text="${credential.url}">Example Credential URL</th>
+                            <td id="credentialTableUsername" th:text="${credential.username}">Example Credential Username</td>
+                            <td id="credentialTablePassword" th:text="${credential.password}">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>
@@ -232,6 +236,7 @@
                                     <div class="form-group">
                                         <label for="credential-url" class="col-form-label">URL</label>
                                         <input type="text" name= "url" class="form-control" id="credential-url"  maxlength="100" required>
+                                        <!-- todo: why is th:field="*{url}" NOT needed here, but but needed for the notes ? -->
                                     </div>
                                     <div class="form-group">
                                         <label for="credential-username" class="col-form-label">Username</label>
@@ -246,13 +251,12 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="save-credential-button" onclick="$('#credentialSubmit').click();">Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -265,8 +269,9 @@
 <script type="text/javascript">
 
     // For opening file modal
-    function showFileModal(test) {
+    function showFileModal(test, fileName) {
         $('#test').val(test ? test : '');
+        $('#fileName').val(fileName ? fileName : '');
         $('#fileModal').modal('show');
     }
 

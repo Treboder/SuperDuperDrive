@@ -31,8 +31,25 @@ public class FileService {
         return existingFiles;
     }
 
-    public void addFile(MultipartFile multipartFile, String userName)  throws IOException {
-        System.out.println(userName + " uploads: " + multipartFile.getOriginalFilename());
+    public void addFile(MultipartFile multipartFile, String userName) throws IOException  {
+        String fileName = multipartFile.getOriginalFilename();
+        String contentType = multipartFile.getContentType();
+        String fileSize = String.valueOf(multipartFile.getSize());
+        Integer userId = userMapper.getUser(userName).getUserId();
+        byte[] fileData = getFileData(multipartFile);
+        File file = new File(0, fileName, contentType, fileSize, userId, fileData);
+        fileMapper.addFile(file);
+    }
+
+    public void deleteFile(Integer fileId) {
+        fileMapper.deleteFile(fileId);
+    }
+
+    public File getFile(String fileName) {
+        return fileMapper.getFile(fileName);
+    }
+
+    private byte[] getFileData(MultipartFile multipartFile) throws IOException {
         InputStream fis = multipartFile.getInputStream();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         int nRead;
@@ -42,23 +59,7 @@ public class FileService {
         }
         buffer.flush();
         byte[] fileData = buffer.toByteArray();
-
-        String fileName = multipartFile.getOriginalFilename();
-        String contentType = multipartFile.getContentType();
-        String fileSize = String.valueOf(multipartFile.getSize());
-        Integer userId = userMapper.getUser(userName).getUserId();
-        File file = new File(0, fileName, contentType, fileSize, userId, fileData);
-        fileMapper.addFile(file);
+        return fileData;
     }
-
-    public void deleteFile(Integer fileId) {
-        fileMapper.deleteFile(fileId);
-    }
-
-
-    public File getFile(String fileName) {
-        return fileMapper.getFile(fileName);
-    }
-
 
 }

@@ -37,8 +37,12 @@ public class FileController {
         MultipartFile multipartFile = newFile.getFile();
 
         // ToDo: Do not create a record without a file specified
-
-        if(fileExists(multipartFile, userName)) {
+        if(newFile.getFile().isEmpty()) {
+            model.addAttribute("changeSuccess", false);
+            model.addAttribute("errorMessage", "No file chosen. ");
+            return "result";
+        }
+        else if(fileExists(multipartFile, userName)) {
             model.addAttribute("changeSuccess", false);
             model.addAttribute("errorMessage", "File already exists. ");
             return "result";

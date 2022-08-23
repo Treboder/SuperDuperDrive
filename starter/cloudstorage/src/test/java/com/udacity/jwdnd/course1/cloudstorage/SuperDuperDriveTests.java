@@ -24,6 +24,7 @@ class SuperDuperDriveTests {
 	private PageObjectSignup signupPage;
 	private PageObjectHomeNotes homePageNotes;
 	private PageObjectHomeFiles homePageFiles;
+	private PageObjectHomeCredentials homePageCredentials;
 	private PageObjectResult resultPage;
 
 	private String firstName = "Harry";
@@ -42,6 +43,18 @@ class SuperDuperDriveTests {
 
 	private String filePath1 = System.getProperty("user.dir");
 	private String fileName1 = "README.md";
+
+	private String credentialUrl1 = "website.com";
+	private String credentialUser1 = "user";
+	private String credentialPassword1 = "pwd";
+
+	private String credentialUrl2 = "website.de";
+	private String credentialUser2 = "sunny76";
+	private String credentialPassword2 = "123";
+
+	private String credentialUrl3 = "website.info";
+	private String credentialUser3 = "incognito";
+	private String credentialPassword3 = "forgotten";
 
 	@BeforeAll
 	static void beforeAll() {
@@ -137,7 +150,7 @@ class SuperDuperDriveTests {
 
 		doSignUp();
 		doLogin();
-		// ... first note already exists after test addNewNoteAndSave() has passed
+		// ... first note already exists after test addNote() has passed
 
 		driver.get("http://localhost:" + port + "/home");
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
@@ -197,7 +210,7 @@ class SuperDuperDriveTests {
 		String noteTitleOutput = homePageNotes.getNoteTitle();
 		String noteDescriptionOutput = homePageNotes.getNoteDescription();
 
-		// expectation is to see the second note, after the first has been (edited and) deleted
+		// expectation is to see the third note in the first place, after the first has been (edited and) deleted
 		Assertions.assertEquals(noteTitle3, noteTitleOutput);
 		Assertions.assertEquals(noteText3, noteDescriptionOutput);
 	}
@@ -263,6 +276,120 @@ class SuperDuperDriveTests {
 		// ToDo: check second row to test that no second file with the same name exists
 	}
 
+	@Test
+	@Order(9)
+	public void addCredential() {
+		homePageCredentials = new PageObjectHomeCredentials(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
+		homePageCredentials.clickAddCredentialButtonNew();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		homePageCredentials.fillCredentialDetailsAndSave(credentialUrl1, credentialUser1, credentialPassword1);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
+		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
+		String credentialUserOutput = homePageCredentials.getCredentialUsername();
+		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+
+		// expectation is to see the first note
+		Assertions.assertEquals(credentialUrl1, credentialUrlOutput);
+		Assertions.assertEquals(credentialUser1, credentialUserOutput);
+		Assertions.assertEquals(credentialPassword1, credentialPwdOutput);
+	}
+
+	@Test
+	@Order(9)
+	public void editCredential() {
+		homePageCredentials = new PageObjectHomeCredentials(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+		// ... first note already exists after test addCredential() has passed
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-credential-button")));
+		homePageCredentials.clickEditCredentialButton();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		homePageCredentials.fillCredentialDetailsAndSave(credentialUrl2, credentialUser2, credentialPassword2);
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
+		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
+		String credentialUserOutput = homePageCredentials.getCredentialUsername();
+		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+
+		// expectation is to see the changed credential
+		Assertions.assertEquals(credentialUrl2, credentialUrlOutput);
+		Assertions.assertEquals(credentialUser2, credentialUserOutput);
+		Assertions.assertEquals(credentialPassword2, credentialPwdOutput);
+	}
+
+	@Test
+	@Order(9)
+	public void deleteCredential() {
+		homePageCredentials = new PageObjectHomeCredentials(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+		// first credential already exists after test addCredential() has passed
+		// first note has then been edited after editCredential() has passed
+		doAddSecondCredential();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("delete-credential-button")));
+		homePageCredentials.clickDeleteCredentialButton();
+
+		webDriverWait.until(ExpectedConditions.titleContains("Result"));
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab(); ;
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
+		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
+		String credentialUserOutput = homePageCredentials.getCredentialUsername();
+		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+
+		// expectation is to see the third credential in the first place, after the first has been (edited and) deleted
+		Assertions.assertEquals(credentialUrl3, credentialUrlOutput);
+		Assertions.assertEquals(credentialUser3, credentialUserOutput);
+		Assertions.assertEquals(credentialPassword3, credentialPwdOutput);
+	}
 
 	private void doSignUp() {
 		driver.get("http://localhost:" + port + "/signup");
@@ -292,6 +419,24 @@ class SuperDuperDriveTests {
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-title")));
 		homePageNotes.fillNoteDetailsAndSave(noteTitle3, noteText3);
+	}
+
+	private void doAddSecondCredential() {
+		homePageCredentials = new PageObjectHomeCredentials(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
+		homePageCredentials.clickAddCredentialButtonNew();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		homePageCredentials.fillCredentialDetailsAndSave(credentialUrl3, credentialUser3, credentialPassword3);
 	}
 
 }
