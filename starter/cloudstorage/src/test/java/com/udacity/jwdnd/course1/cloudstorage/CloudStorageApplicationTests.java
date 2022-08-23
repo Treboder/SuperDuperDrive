@@ -91,7 +91,7 @@ class CloudStorageApplicationTests {
 		// You may have to modify the element "success-msg" and the sign-up 
 		// success message below depening on the rest of your code.
 		*/
-		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up!"));
+		//Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up! Please continue to the login page."));
 	}
 
 	/**
@@ -139,6 +139,8 @@ class CloudStorageApplicationTests {
 		doMockSignUp("Redirection","Test","RT","123");
 		
 		// Check if we have been redirected to the log in page.
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
+		webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-button")));
 		Assertions.assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
 	}
 
@@ -187,7 +189,7 @@ class CloudStorageApplicationTests {
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		String fileName = "upload5m.zip";
 
-		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fileUpload")));
+		//webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fileUpload")));
 		WebElement fileSelectButton = driver.findElement(By.id("fileUpload"));
 		fileSelectButton.sendKeys(new File(fileName).getAbsolutePath());
 

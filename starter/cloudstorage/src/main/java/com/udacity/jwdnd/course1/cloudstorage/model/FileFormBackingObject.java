@@ -14,32 +14,4 @@ public class FileFormBackingObject {
         this.file = file;
     }
 
-
-    // ### trying trying
-
-    private String test = "ahahahahaha";
-
-    public String getTest() {
-        //return test;
-        if(file == null)
-            return "1"; //""file is null";
-        else
-            return file.getName();
-    }
-
-    private String fileName;            // VARCHAR
-
-    public String getFileName() {
-        return "next step is to show the content here"; //fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-
-
-
-
-
 }
