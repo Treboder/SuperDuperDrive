@@ -13,4 +13,17 @@ public class FileFormBackingObject {
     public void setFile(MultipartFile file) {
         this.file = file;
     }
+
+    private String test = "ahahahahaha";
+
+    public String getTest() {
+        //return test;
+        if(file == null)
+            return "1"; //""file is null";
+        else
+            return file.getName();
+    }
+
+
+
 }

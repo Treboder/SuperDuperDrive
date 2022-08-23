@@ -55,4 +55,10 @@ public class FileService {
         fileMapper.deleteFile(fileId);
     }
 
+
+    public File getFile(String fileName) {
+        return fileMapper.getFile(fileName);
+    }
+
+
 }

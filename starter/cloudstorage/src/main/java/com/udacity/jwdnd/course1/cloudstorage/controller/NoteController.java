@@ -23,7 +23,7 @@ public class NoteController {
     @PostMapping("addOrEdit")
     public String addOrEditNote(
             Authentication authentication,
-            @ModelAttribute("newNote") NoteFormBackingObject newNote,
+            @ModelAttribute("noteForm") NoteFormBackingObject newNote,
             Model model) {
 
         String userName = authentication.getName();

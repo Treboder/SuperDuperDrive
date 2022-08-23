@@ -45,4 +45,12 @@ public class File {
         return fileData;
     }
 
+    public String getTest() {
+        return test;
+    }
+
+    private String test = "lololo";
+
+
+
 }

@@ -6,6 +6,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.FileFormBackingObject;
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteFormBackingObject;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +31,13 @@ public class FileController {
 
     @PostMapping("upload")
     public String uploadFile(Authentication authentication,
-                             @ModelAttribute("newFile") FileFormBackingObject newFile,
+                             @ModelAttribute("fileForm") FileFormBackingObject newFile,
                              Model model) throws IOException {
         String userName = authentication.getName();
         MultipartFile multipartFile = newFile.getFile();
+
+        // ToDo: Do not create a record without a file specified
+
         if(fileExists(multipartFile, userName)) {
             model.addAttribute("changeSuccess", false);
             model.addAttribute("errorMessage", "File already exists. ");
@@ -57,6 +61,14 @@ public class FileController {
         model.addObject("changeSuccess", true);
         model.setViewName("result");
         return model; // alternatively use "Model model" as input parameter and return String (with "result") instead
+    }
+
+    @GetMapping(
+            value = "/get/{fileName}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] getFile(@PathVariable String fileName) {
+        return fileService.getFile(fileName).getFileData();
     }
 
     private Boolean fileExists(MultipartFile multipartFile, String userName) {

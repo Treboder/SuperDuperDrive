@@ -34,8 +34,8 @@ public class HomeController {
     @GetMapping()
     public String homeView(Authentication authentication,
                            // model attributes not used here, but required by thymeleaf to render home.html properly
-                           @ModelAttribute("newFile") FileFormBackingObject newFile,
-                           @ModelAttribute("newNote") NoteFormBackingObject newNote,
+                           @ModelAttribute("fileForm") FileFormBackingObject newFile,
+                           @ModelAttribute("noteForm") NoteFormBackingObject newNote,
                            Model model) {
 
         // todo: show files, notes and credentials from current user only
