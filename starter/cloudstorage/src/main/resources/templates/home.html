@@ -204,7 +204,7 @@
                                    th:credentialId="${credential.credentialId}"
                                    th:url="${credential.url}"
                                    th:username="${credential.username}"
-                                   th:password="${credential.password}"
+                                   th:password="${encryption.decryptValue(credential.password, credential.key)}"
                                    th:onclick="showCredentialModal(this.getAttribute('credentialId'), this.getAttribute('url'), this.getAttribute('username'), this.getAttribute('password'))">
                                    Edit
                                 </a>

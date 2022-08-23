@@ -41,19 +41,17 @@ public class CredentialController {
         String password = credentialForm.getPassword();
 
         // encrypt password
-//        SecureRandom random = new SecureRandom();
-//        byte[] key = new byte[16];
-//        random.nextBytes(key);
-//        String encodedKey = Base64.getEncoder().encodeToString(key);
-//        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
 
         // add new or edit existing credential
         if(id.isEmpty())
-            //credentialService.addCredential(url, userName, encodedKey, encryptedPassword, actingUser);
-            credentialService.addCredential(url, userName, "key", password, actingUser);
+            credentialService.addCredential(url, userName, encodedKey, encryptedPassword, actingUser);
         else
-            //credentialService.editCredential(id, url, userName, encodedKey, encryptedPassword, actingUser);
-            credentialService.editCredential(id, url, userName, "key", password, actingUser);
+            credentialService.editCredential(id, url, userName, encodedKey, encryptedPassword, actingUser);
 
         // always show success message, but should depend on noteService response
         model.addAttribute("changeSuccess", true);
@@ -73,21 +71,7 @@ public class CredentialController {
         return model; // alternatively use "Model model" as input parameter and return String (with "result") instead
     }
 
-    private String encryptPassword(String password) {
-        SecureRandom random = new SecureRandom();
-        byte[] key = new byte[16];
-        random.nextBytes(key);
-        String encodedKey = Base64.getEncoder().encodeToString(key); // todo
-        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
-        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, encodedKey);
-        return encryptedPassword;
-    }
-
-    private String decryptPassword(String password) {
-        SecureRandom random = new SecureRandom();
-        byte[] key = new byte[16];
-        random.nextBytes(key);
-        String encodedKey = Base64.getEncoder().encodeToString(key);
+    private String decryptPassword(String password, String encodedKey) {
         String decryptedPassword = encryptionService.decryptValue(password, encodedKey);
         return decryptedPassword;
     }

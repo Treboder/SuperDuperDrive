@@ -70,17 +70,32 @@ public class PageObjectHomeCredentials {
         save_credential_button.click();
     }
 
-    public String getCredentialUrl() {
+    public String getCredentialUrlFromDialog() {
+        String url = credential_url.getAttribute("value");
+        return url;
+    }
+
+    public String getCredentialUsernameFromDialog() {
+        String user = credential_username.getAttribute("value");
+        return user;
+    }
+
+    public String getCredentialPasswordFromDialog() {
+        String pwd = credential_password.getAttribute("value");
+        return pwd;
+    }
+
+    public String getCredentialUrlFromTable() {
         String url = credentialTableUrl.getText();
         return url;
     }
 
-    public String getCredentialUsername() {
+    public String getCredentialUsernameFromTable() {
         String user = credentialTableUsername.getText();
         return user;
     }
 
-    public String getCredentialPassword() {
+    public String getCredentialPasswordFromTable() {
         String pwd = credentialTablePassword.getText();
         return pwd;
     }

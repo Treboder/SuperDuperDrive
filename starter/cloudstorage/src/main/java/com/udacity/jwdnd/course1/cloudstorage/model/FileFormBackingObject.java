@@ -30,7 +30,7 @@ public class FileFormBackingObject {
     private String fileName;            // VARCHAR
 
     public String getFileName() {
-        return "sould be a file name"; //fileName;
+        return "should be a file name"; //fileName;
     }
 
     public void setFileName(String fileName) {

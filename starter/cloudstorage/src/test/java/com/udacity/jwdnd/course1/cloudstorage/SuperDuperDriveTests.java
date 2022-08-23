@@ -304,18 +304,18 @@ class SuperDuperDriveTests {
 		homePageCredentials.switchToNavCredentialsTab();
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
-		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
-		String credentialUserOutput = homePageCredentials.getCredentialUsername();
-		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+		String credentialUrlOutput = homePageCredentials.getCredentialUrlFromTable();
+		String credentialUserOutput = homePageCredentials.getCredentialUsernameFromTable();
+		String credentialPwdOutput = homePageCredentials.getCredentialPasswordFromTable();
 
 		// expectation is to see the first note
 		Assertions.assertEquals(credentialUrl1, credentialUrlOutput);
 		Assertions.assertEquals(credentialUser1, credentialUserOutput);
-		Assertions.assertEquals(credentialPassword1, credentialPwdOutput);
+		Assertions.assertNotEquals(credentialPassword1, credentialPwdOutput);
 	}
 
 	@Test
-	@Order(9)
+	@Order(10)
 	public void editCredential() {
 		homePageCredentials = new PageObjectHomeCredentials(driver);
 		resultPage = new PageObjectResult(driver);
@@ -343,9 +343,39 @@ class SuperDuperDriveTests {
 		homePageCredentials.switchToNavCredentialsTab();
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
-		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
-		String credentialUserOutput = homePageCredentials.getCredentialUsername();
-		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+		String credentialUrlOutput = homePageCredentials.getCredentialUrlFromTable();
+		String credentialUserOutput = homePageCredentials.getCredentialUsernameFromTable();
+		String credentialPwdOutput = homePageCredentials.getCredentialPasswordFromTable();
+
+		// expectation is to see the changed credential
+		Assertions.assertEquals(credentialUrl2, credentialUrlOutput);
+		Assertions.assertEquals(credentialUser2, credentialUserOutput);
+		Assertions.assertNotEquals(credentialPassword2, credentialPwdOutput);
+	}
+
+	@Test
+	@Order(11)
+	public void viewCredential() {
+		homePageCredentials = new PageObjectHomeCredentials(driver);
+		resultPage = new PageObjectResult(driver);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+
+		doSignUp();
+		doLogin();
+		// first credential already exists after test addCredential() has passed
+		// first note has then been edited after editCredential() has passed
+
+		driver.get("http://localhost:" + port + "/home");
+		webDriverWait.until(ExpectedConditions.titleContains("Home"));
+		homePageCredentials.switchToNavCredentialsTab();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-credential-button")));
+		homePageCredentials.clickEditCredentialButton();
+
+		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		String credentialUrlOutput = homePageCredentials.getCredentialUrlFromDialog();
+		String credentialUserOutput = homePageCredentials.getCredentialUsernameFromDialog();
+		String credentialPwdOutput = homePageCredentials.getCredentialPasswordFromDialog();
 
 		// expectation is to see the changed credential
 		Assertions.assertEquals(credentialUrl2, credentialUrlOutput);
@@ -354,7 +384,7 @@ class SuperDuperDriveTests {
 	}
 
 	@Test
-	@Order(9)
+	@Order(12)
 	public void deleteCredential() {
 		homePageCredentials = new PageObjectHomeCredentials(driver);
 		resultPage = new PageObjectResult(driver);
@@ -381,14 +411,14 @@ class SuperDuperDriveTests {
 		homePageCredentials.switchToNavCredentialsTab(); ;
 
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("add-credential-button")));
-		String credentialUrlOutput = homePageCredentials.getCredentialUrl();
-		String credentialUserOutput = homePageCredentials.getCredentialUsername();
-		String credentialPwdOutput = homePageCredentials.getCredentialPassword();
+		String credentialUrlOutput = homePageCredentials.getCredentialUrlFromTable();
+		String credentialUserOutput = homePageCredentials.getCredentialUsernameFromTable();
+		String credentialPwdOutput = homePageCredentials.getCredentialPasswordFromTable();
 
 		// expectation is to see the third credential in the first place, after the first has been (edited and) deleted
 		Assertions.assertEquals(credentialUrl3, credentialUrlOutput);
 		Assertions.assertEquals(credentialUser3, credentialUserOutput);
-		Assertions.assertEquals(credentialPassword3, credentialPwdOutput);
+		Assertions.assertNotEquals(credentialPassword3, credentialPwdOutput);
 	}
 
 	private void doSignUp() {
