@@ -42,11 +42,10 @@ public class HomeController {
                            @ModelAttribute("credentialForm") CredentialFormBackingObject newCredential,
                            Model model) {
 
-        // todo: show files, notes and credentials from current user only
         model.addAttribute("files", fileService.getListOfFilesFromUser(authentication.getName())) ;
         model.addAttribute("notes", noteService.getListOfNotesFromUser(authentication.getName())) ;
         model.addAttribute("credentials", credentialService.getListOfCredentialsFromUser(authentication.getName())) ;
-        model.addAttribute("encryption", encryptionService);
+        model.addAttribute("encryption", encryptionService); // is called from home.html when rendering the password
 
         return "home"; // refers to home.html from templates
     }

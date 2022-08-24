@@ -39,7 +39,6 @@ public class FileController {
         String userName = authentication.getName();
         MultipartFile multipartFile = newFile.getFile();
 
-        // ToDo: Do not create a record without a file specified
         if(newFile.getFile().isEmpty()) {
             model.addAttribute("changeSuccess", false);
             model.addAttribute("errorMessage", "No file chosen. ");
