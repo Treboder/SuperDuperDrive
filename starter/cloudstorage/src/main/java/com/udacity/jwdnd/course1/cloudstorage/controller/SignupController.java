@@ -28,25 +28,25 @@ public class SignupController {
     }
 
     @PostMapping()
-    public String signupUser(@ModelAttribute User user, Model model, RedirectAttributes redirectAttrs) {
+    public String signupUser(@ModelAttribute User user, Model model) {
+
+        // create user with some sanity checks
         String signupErrorMessage = null;
-
-        if (!userService.isUsernameAvailable(user.getUsername())) {
+        if (!userService.isUsernameAvailable(user.getUsername()))
             signupErrorMessage = "The username already exists.";
-        }
-
-        if (signupErrorMessage == null) {
+        else {
             int rowsAdded = userService.createUser(user);
-            if (rowsAdded < 0) {
+            if (rowsAdded < 0)
                 signupErrorMessage = "There was an error signing you up. Please try again.";
-            }
         }
 
+        // handle success/error messages and redirect
         if (signupErrorMessage == null) {
-            model.addAttribute("signupSuccess", true); // ToDo: check why model param does not lead to proper success message
+            model.addAttribute("signupSuccess", true);
             return "redirect:/login";
+            // ToDo: check why model param does not lead to proper success message, try flash attributes:
+            //      https://www.logicbig.com/tutorials/spring-framework/spring-web-mvc/redirect-attributes.html
         }
-
         else {
             model.addAttribute("signupError", true);
             model.addAttribute("signupErrorMessage", signupErrorMessage);
@@ -54,6 +54,9 @@ public class SignupController {
 
         return "signup";
     }
+
+
+
 }
 
 
