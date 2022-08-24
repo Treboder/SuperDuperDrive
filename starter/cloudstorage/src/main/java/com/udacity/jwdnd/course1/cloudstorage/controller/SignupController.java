@@ -42,6 +42,7 @@ public class SignupController {
 
         // handle success/error messages and redirect
         if (signupErrorMessage == null) {
+            // ToDo: check why model param does not lead to proper success message
             model.addAttribute("signupSuccess", true);
             return "redirect:/login";
             // ToDo: check why model param does not lead to proper success message, try flash attributes:
