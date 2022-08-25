@@ -11,8 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.ListIterator;
 
 @Controller("file")
 @RequestMapping("file")
+@ControllerAdvice
 public class FileController {
 
     FileService fileService; // initialized by Spring via constructor below
@@ -85,6 +88,16 @@ public class FileController {
         return false;
     }
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleFileUploadError(RedirectAttributes ra, Model model){
+        model.addAttribute("changeSuccess", false);
+        model.addAttribute("errorMessage", "File too big. ");
+        return "result";
+        // Following two lines in application.properties enable large file uploads, so that this exception handler is an extra safety net
+        // spring.servlet.multipart.max-file-size=-1
+        // #spring.servlet.multipart.max-request-size=-1
+        // ... on the other hand, removing these two files in application.properties will call the exception handler
+    }
 
 }
 

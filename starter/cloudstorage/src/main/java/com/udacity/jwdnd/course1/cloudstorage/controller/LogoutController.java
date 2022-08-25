@@ -23,7 +23,6 @@ public class LogoutController {
         model.addAttribute("logoutSuccess", true);
         model.addAttribute("loginError", false);
         SecurityContextHolder.clearContext();
-        //System.out.println(getCurrentUser() + " logged out");
         return "login";
     }
 

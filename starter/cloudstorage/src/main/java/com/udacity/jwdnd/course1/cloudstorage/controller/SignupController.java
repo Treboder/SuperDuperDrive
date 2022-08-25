@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller()
 @RequestMapping("/signup")
@@ -28,29 +29,35 @@ public class SignupController {
 
     @PostMapping()
     public String signupUser(@ModelAttribute User user, Model model) {
+
+        // create user with some sanity checks
         String signupErrorMessage = null;
-
-        if (!userService.isUsernameAvailable(user.getUsername())) {
+        if (!userService.isUsernameAvailable(user.getUsername()))
             signupErrorMessage = "The username already exists.";
-        }
-
-        if (signupErrorMessage == null) {
+        else {
             int rowsAdded = userService.createUser(user);
-            if (rowsAdded < 0) {
+            if (rowsAdded < 0)
                 signupErrorMessage = "There was an error signing you up. Please try again.";
-
-            }
         }
 
+        // handle success/error messages and redirect
         if (signupErrorMessage == null) {
+            // ToDo: check why model param does not lead to proper success message
             model.addAttribute("signupSuccess", true);
-
-        } else {
+            return "redirect:/login";
+            // ToDo: check why model param does not lead to proper success message, try flash attributes:
+            //      https://www.logicbig.com/tutorials/spring-framework/spring-web-mvc/redirect-attributes.html
+        }
+        else {
             model.addAttribute("signupError", true);
             model.addAttribute("signupErrorMessage", signupErrorMessage);
-
         }
 
         return "signup";
     }
+
+
+
 }
+
+
