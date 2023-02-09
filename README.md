@@ -1,3 +1,7 @@
+[![Build Maven Project](https://github.com/Treboder/SuperDuperDrive/actions/workflows/maven-build.yml/badge.svg)](https://github.com/Treboder/SuperDuperDrive/actions/workflows/maven-build.yml)
+[![Push image to Docker Hub](https://github.com/Treboder/SuperDuperDrive/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Treboder/SuperDuperDrive/actions/workflows/docker-publish.yml)
+[![Push image to GitHub Container Registry](https://github.com/Treboder/SuperDuperDrive/actions/workflows/ghcr-publish.yml/badge.svg)](https://github.com/Treboder/SuperDuperDrive/actions/workflows/ghcr-publish.yml)
+
 # Super*Duper*Drive Cloud Storage
 
 This project demonstrates basic [Spring Boot](https://spring.io/guides/gs/spring-boot/) features
