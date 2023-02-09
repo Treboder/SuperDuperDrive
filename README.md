@@ -15,7 +15,7 @@ It offers three user-facing features:
 2. **Note Management:** Add/update/remove text notes
 3. **Password Management:** Save, edit, and delete website credentials.
 
-README.md is also available via [Github Pages]()
+README.md is also available via [Github Pages](https://treboder.github.io/SuperDuperDrive/)
 
 The project features:
 * [Spring MVC / Spring Boot](https://spring.io/guides/gs/spring-boot/)
@@ -24,8 +24,8 @@ The project features:
 * [Thymeleaf](https://www.thymeleaf.org/) for html integration
 * Web Frontend Testing with [Selenium](https://www.selenium.dev/)
 * Containerization via Docker with latest images published to 
-[Docker Hub]() and 
-[Github Registry]()
+[Docker Hub](https://hub.docker.com/repository/docker/treboder/superduperdrive) and 
+[Github Registry](https://github.com/Treboder/SuperDuperDrive/pkgs/container/superduperdrive)
 
 
 ## General Setup
