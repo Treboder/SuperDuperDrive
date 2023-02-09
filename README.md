@@ -49,33 +49,33 @@ mvn clean package -Dmaven.test.skip=true
 
 The back-end is all about security and connecting the front-end to database data and actions. 
 
-1. Managing user access with Spring Security
+### Managing user access with Spring Security
 
-- The system restricts unauthorized users from accessing pages other than the login and signup pages. 
+The system restricts unauthorized users from accessing pages other than the login and signup pages. 
 To do this, we use a security configuration class that extends the `WebSecurityConfigurerAdapter` class from Spring. 
 
-- Spring Boot has built-in support for handling calls to the `/login` and `/logout` endpoints. 
+Spring Boot has built-in support for handling calls to the `/login` and `/logout` endpoints. 
 The security configuration overrides the default login page with one of our own, discussed in the front-end section.
  
-- We also use a custom `AuthenticationProvider` which authorizes user logins by matching their credentials against those stored in the database.  
+We also use a custom `AuthenticationProvider` which authorizes user logins by matching their credentials against those stored in the database.  
 
-2. Handling front-end calls with controllers
+### Handling front-end calls with controllers
 
- - Controllers for the application bind application data and functionality to the front-end. 
+Controllers for the application bind application data and functionality to the front-end. 
 That means using Spring MVC's application model to identify the templates served for different requests and populating the view model with data needed by the template. 
 
- - The controllers are responsible for determining what, if any, error messages the application displays to the user. 
+The controllers are responsible for determining what, if any, error messages the application displays to the user. 
 When a controller processes front-end requests, it delegates the individual steps and logic of those requests to other services in the application, interpreting the results to ensure a smooth user experience.
 
- - Consider the `HashService` and `EncryptionService` classes included in the starter code package `service`. 
+Consider the `HashService` and `EncryptionService` classes included in the starter code package `service`. 
 These classes encapsulate simple, repetitive tasks and are available anywhere dependency injection is supported.
 
-3. Making calls to the database with MyBatis mappers
+### Making calls to the database with MyBatis mappers
 
- - Based on the provided database schema, the Java classes in the `model` package match the data in the database.
+Based on the provided database schema, the Java classes in the `model` package match the data in the database.
  For each data base table, there exists one POJO (Plain Old Java Objects) with fields that match the names and data types in the schema.
 
- - To connect these model classes with database data, we use a MyBatis mapper in the `mapper` packagefor each of the model types.
+To connect these model classes with database data, we use a MyBatis mapper in the `mapper` packagefor each of the model types.
 These have methods that represent specific SQL queries and statements required by the functionality of the application.
 They support the basic CRUD (Create, Read, Update, Delete) operations for their respective models at the very least. 
 
