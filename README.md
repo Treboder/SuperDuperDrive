@@ -1,11 +1,36 @@
 # Super*Duper*Drive Cloud Storage
-You have been hired by Super*Duper*Drive, which is a brand new company aiming to make a dent in the Cloud Storage market and is already facing stiff competition from rivals like Google Drive and Dropbox. That hasn't dampened their spirits at all, however. They want to include personal information management features in their application to differentiate them from the competition, and the minimum viable product includes three user-facing features:
+
+This project demonstrates basic [Spring Boot](https://spring.io/guides/gs/spring-boot/) features
+along with an automated CI pipeline using [Docker](https://www.docker.com/) and [Github Actions](https://github.com/features/actions).
+
+The application provides very simple Cloud Storage features, including personal information management features.
+The project covers server, website, and tests, and deployment as docker image.
+It offers three user-facing features:
 
 1. **Simple File Storage:** Upload/download/remove files
 2. **Note Management:** Add/update/remove text notes
-3. **Password Management:** Save, edit, and delete website credentials.  
+3. **Password Management:** Save, edit, and delete website credentials.
 
-Super*Duper*Drive wants you to focus on building the web application with the skills you acquired in this course. That means you are responsible for developing the server, website, and tests, but other tasks like deployment belong to other teams at the company. 
+README.md is also available via [Github Pages]()
+
+The project features:
+* [Spring MVC / Spring Boot](https://spring.io/guides/gs/spring-boot/)
+* Authorization via [Spring Security](https://spring.io/guides/gs/securing-web/)
+* [H2 databse](https://www.h2database.com/html/main.html) for data management
+* [Thymeleaf](https://www.thymeleaf.org/) for html integration
+* Web Frontend Testing with [Selenium](https://www.selenium.dev/)
+* Containerization via Docker with latest images published to 
+[Docker Hub]() and 
+[Github Registry]()
+
+
+# Selenium vs. local browser environment
+
+You might observe that Selenium test results depend on your local browser settings.
+In case of failing tests, we make sure that jars are build with:
+````
+mvn clean package -Dmaven.test.skip=true
+````
 
 ## Starter Project
 A senior developer is assigned to be your tech lead and mentor, and they put together a starter project for you. It's a Maven project configured for all the dependencies the project requires, though you should feel free to add any additional dependencies you might require. [You can download or clone the starter repository here](https://github.com/udacity/nd035-c1-spring-boot-basics-project-starter/tree/master/starter/cloudstorage).
